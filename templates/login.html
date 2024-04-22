@@ -19,22 +19,31 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="mb-4">Вход</h2>
-    {% if error %}
-        <p style="color: red;">Неправильный логин или пароль. Попробуйте еще раз</p>
-    {% endif %}
-    <form method="POST">
-        <div class="mb-3">
-            <label for="username" class="form-label">Логин:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Пароль:</label>
-            <input type="password" id="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Войти</button>
+    <h2 class="mb-4">Авторизация</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}<br>
+            {% for error in form.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <div>{{ message }}</div>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     </form>
-    <p class="mt-3">Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a>.</p>
 </div>
 </body>
 </html>
