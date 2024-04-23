@@ -3,6 +3,7 @@ import csv
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from data.users import User
+from data.habits import Habit
 from forms.user import RegisterForm, LoginForm
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 from flask_login.mixins import AnonymousUserMixin
@@ -20,19 +21,21 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-# Хранилище пользователей (здесь предполагается простота, реальное приложение должно использовать базу данных)
-users = {}
-
-# Хранилище привычек (опять же, это просто для примера)
-habits = {
-    "Exercise": [False] * 7,
-    "Reading": [False] * 7
-}
+def get_user_habits(user_id):
+    db_sess = db_session.create_session()
+    habits = db_sess.query(Habit.habit).filter(Habit.user_id == user_id).all()
+    return habits
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', habits=habits)
+    label = 'Зарегистрироваться'
+    if current_user.is_authenticated:
+        label = 'Профиль'
+        habits = get_user_habits(current_user.id)
+    else:
+        habits = []
+    return render_template('index.html', habits=habits, label=label)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -106,9 +109,9 @@ def download_table():
 
 @app.route('/add_habit', methods=['POST'])
 def add_new_habit():
-    habit_name = request.form['habit_name']
-    habits[habit_name] = [False] * 7
-    return redirect(url_for('index'))
+    db_sess = db_session.create_session()
+    habits = db_sess.query(Habit.habit).all()
+    return redirect(url_for('add_habit', options=habits))
 
 
 def main():
