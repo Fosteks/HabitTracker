@@ -15,3 +15,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
+
+class AddHabitForm(FlaskForm):
+    other_see = BooleanField('Показывать привычку другим пользователям')
+    submit = SubmitField('Добавить свою привычку')

@@ -12,4 +12,4 @@ class Habit(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("users.id"))
     user = orm.relationship('User')
 
-    habit = sqlalchemy.Column(sqlalchemy.String)
+    habit = sqlalchemy.Column(sqlalchemy.String, default="")

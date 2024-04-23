@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .popup {
+                display: none;
+                position: absolute;
+                left: 100px;
+                top: 20px;
+                width: 200px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 100;
+            }
+
+            .popup:target {
+                display: block;
+            }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -26,19 +44,29 @@
         </tr>
         </thead>
         <tbody>
-        {% for habit in habits %}
-        <tr>
-            <td>{{ habit }}</td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td><input type="checkbox" class="form-check-input"></td>
-            <td>70</td>
-        </tr>
-        {% endfor %}
+        <form action="" method="post">
+            {% for habit in habits %}
+            <tr>
+                {% if not habit.habit %}
+                <td><input formmethod="post" type="text" name={{ habit.id }}></input></td>
+                {% else %}
+                <td><a href="#popup{{ loop.index }}">{{ habit.habit }}</a></td>
+                    <div id="popup{{ loop.index }}" class="popup">
+                        <a href="/rename_habit/{{ i }}">Изменить</a>
+                        <a href="/delete_habit/{{ i }}">Удалить</a></div>
+                {% endif %}
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td>70</td>
+            </tr>
+            {% endfor %}
+            <input type="submit" class="btn primary-btn">
+        </form>
         </tbody>
     </table>
     <div class="d-flex justify-content-between">

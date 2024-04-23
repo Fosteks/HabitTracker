@@ -19,14 +19,15 @@
 </head>
 <body>
 <div class="container">
-    <h2>Выберите из имеющихся или добавьте свою.</h2>
+    <h2>Выберите из имеющихся или добавьте свою привычку.</h2>
     <form action="/add_new_habit" method="post">
         <datalist id="character">
             {% for opt in options %}
-                <option value={{ opt }}></option>
+                <option value={{ opt }}>{{ form.habit(class="form-control") }}</option>
             {% endfor %}
         </datalist></p>
-        <button type="submit" class="btn btn-primary">Добавить привычку</button>
+        <p>{{ form.other_see() }} {{ form.other_see.label }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     </form>
 </div>
 </body>

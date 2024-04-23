@@ -4,9 +4,10 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from data.users import User
 from data.habits import Habit
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, AddHabitForm
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 from flask_login.mixins import AnonymousUserMixin
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -21,21 +22,53 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-def get_user_habits(user_id):
+def get_user_habits(user_id, arg=1):
     db_sess = db_session.create_session()
-    habits = db_sess.query(Habit.habit).filter(Habit.user_id == user_id).all()
+    habits = db_sess.query(Habit).filter(Habit.user_id == user_id).all()
+    db_sess.close()
+    if arg:
+        res = []
+        for habit in habits:
+            res.append(habit.habit)
+        return res
     return habits
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def index():
-    label = 'Зарегистрироваться'
-    if current_user.is_authenticated:
-        label = 'Профиль'
-        habits = get_user_habits(current_user.id)
-    else:
-        habits = []
-    return render_template('index.html', habits=habits, label=label)
+    if request.method == 'GET':
+        label = 'Зарегистрироваться'
+        if current_user.is_authenticated:
+            label = 'Профиль'
+            habits = get_user_habits(current_user.id, 0)
+        else:
+            habits = []
+        return render_template('index.html', habits=habits, label=label)
+    elif request.method == 'POST':
+        print('ok')
+        db_sess = db_session.create_session()
+        for habit in db_sess.query(Habit).filter(Habit.user_id == current_user.id):
+            print(1, habit.habit)
+            if not habit.habit:
+                id = habit.id
+                hab = request.form.get(str(id))
+                print(2, hab)
+                if hab:
+                    print('dwxadcaxwdacf')
+                    habit.habit = hab
+        db_sess.commit()
+        return redirect('/')
+
+
+@app.route('/add_habit')
+def add_new_habit():
+    db_sess = db_session.create_session()
+    habit = Habit()
+    habit.user_id = current_user.id
+    db_sess.add(habit)
+    db_sess.commit()
+    db_sess.close()
+    return redirect('/')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -105,13 +138,6 @@ def download_table():
         for habit, progress in habits.items():
             writer.writerow([habit] + progress)
     return send_file(filename, as_attachment=True)
-
-
-@app.route('/add_habit', methods=['POST'])
-def add_new_habit():
-    db_sess = db_session.create_session()
-    habits = db_sess.query(Habit.habit).all()
-    return redirect(url_for('add_habit', options=habits))
 
 
 def main():
