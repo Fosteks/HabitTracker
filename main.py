@@ -31,7 +31,7 @@ def get_user_habits(user_id, arg=1):
         for habit in habits:
             res.append(habit.habit)
         return res
-    return habits
+    return db_sess.query(User).filter(User.id == user_id).first().habits
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -45,16 +45,13 @@ def index():
             habits = []
         return render_template('index.html', habits=habits, label=label)
     elif request.method == 'POST':
-        print('ok')
         db_sess = db_session.create_session()
         for habit in db_sess.query(Habit).filter(Habit.user_id == current_user.id):
-            print(1, habit.habit)
             if not habit.habit:
                 id = habit.id
                 hab = request.form.get(str(id))
-                print(2, hab)
                 if hab:
-                    print('dwxadcaxwdacf')
+                    print(request.form.get(str(id) + str(1)))
                     habit.habit = hab
         db_sess.commit()
         return redirect('/')

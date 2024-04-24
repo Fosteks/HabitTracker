@@ -52,20 +52,19 @@
                 {% else %}
                 <td><a href="#popup{{ loop.index }}">{{ habit.habit }}</a></td>
                     <div id="popup{{ loop.index }}" class="popup">
-                        <a href="/rename_habit/{{ i }}">Изменить</a>
-                        <a href="/delete_habit/{{ i }}">Удалить</a></div>
+                        <a href="/rename_habit/{{ habit.id }}">Изменить</a>
+                        <a href="/delete_habit/{{ habit.id }}">Удалить</a></div>
                 {% endif %}
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td><input type="checkbox" class="form-check-input"></td>
-                <td>70</td>
+                {% for i in range(7) %}
+                    <td><input name={{ habit.id }}{{ i }} type="checkbox" class="form-check-input" checked></td>
+                {% endfor %}
+                <td>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                    </div></td>
             </tr>
             {% endfor %}
-            <input type="submit" class="btn primary-btn">
+            <button class="btn primary-btn"><input type="submit" value="Сохранить изменения"></button>
         </form>
         </tbody>
     </table>

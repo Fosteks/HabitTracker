@@ -13,3 +13,11 @@ class Habit(SqlAlchemyBase):
     user = orm.relationship('User')
 
     habit = sqlalchemy.Column(sqlalchemy.String, default="")
+
+    day1 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day2 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day3 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day4 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day5 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day6 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    day7 = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
