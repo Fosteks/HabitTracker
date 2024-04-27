@@ -5,34 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .popup {
-                display: none;
-                position: absolute;
-                left: 100px;
-                top: 20px;
-                width: 200px;
-                padding: 10px;
-                border: 1px solid #ccc;
-                background-color: #fff;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                z-index: 100;
-            }
-
-            .popup:target {
-                display: block;
-            }
-    </style>
+    <link href="static/css/index.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
     <div class="d-flex justify-content-end mb-3">
-        <a href="/profile"><button class="btn btn-primary">{{ label }}</button></a>
+        <a href="/profile">
+            <button class="btn btn-primary">{{ label }}</button>
+        </a>
+    </div>
+    <div class="d-flex justify-content-center mb-3">
+        <h5>Совет: {{ advice }}</h5>
     </div>
     <table class="table table-bordered">
-        <thead class="bg-primary text-white">
-        <tr>
-            <th>Привычка</th>
+        <thead>
+        <tr class="table-primary">
+            <th>
+                <div class="form-inline">
+                    <form action="/group_of_habits" method="post" class="d-flex">
+                        <select name="chosen_group" class="form-select">
+                            {% for group in groups %}
+                            <option value="{{ group }}">{{ group }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-info">Выбрать</button>
+                    </form>
+                </div>
+            </th>
             <th>Понедельник</th>
             <th>Вторник</th>
             <th>Среда</th>
@@ -44,35 +43,112 @@
         </tr>
         </thead>
         <tbody>
-        <form action="" method="post">
+        <form action="/{{groups[0]}}" method="post">
             {% for habit in habits %}
+            {% if habit.group == groups[0] or groups[0] == 'Все привычки' %}
             <tr>
                 {% if not habit.habit %}
-                <td><input formmethod="post" type="text" name={{ habit.id }}></input></td>
+                <td><input formmethod="post" type="text" name="{{ habit.id }}" class="form-control"></td>
                 {% else %}
-                <td><a href="#popup{{ loop.index }}">{{ habit.habit }}</a></td>
-                    <div id="popup{{ loop.index }}" class="popup">
-                        <a href="/rename_habit/{{ habit.id }}">Изменить</a>
-                        <a href="/delete_habit/{{ habit.id }}">Удалить</a></div>
+                <td>
+                    <button type='button' style="padding: 0; border: none; font: inherit; color: inherit; background-color: transparent;" class="openModalBtn">{{ habit.habit }}</button>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <a href="/rename_habit/{{ habit.id }}" class="modal-button btn">Изменить</a>
+                            <a href="/delete_habit/{{ habit.id }}" class="modal-button danger btn">Удалить</a>
+                        </div>
+                    </div>
+
+                </td>
                 {% endif %}
-                {% for i in range(7) %}
-                    <td><input name={{ habit.id }}{{ i }} type="checkbox" class="form-check-input" checked></td>
-                {% endfor %}
+                {% set count = namespace(a=0) %}
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day1" type="checkbox" class="form-check-input" {% if habit.day1
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day2" type="checkbox" class="form-check-input" {% if habit.day2
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day3" type="checkbox" class="form-check-input" {% if habit.day3
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day4" type="checkbox" class="form-check-input" {% if habit.day4
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day5" type="checkbox" class="form-check-input" {% if habit.day5
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox">
+                    <input name="{{ habit.id }}day6" type="checkbox" class="form-check-input" {% if habit.day6
+                           %}checked{% endif %}>
+                    <span class="checkmark"></span>
+                </label></td>
+                <td><label class="animated-checkbox"><input name="{{ habit.id }}day7" type="checkbox"
+                                                            class="form-check-input" {% if habit.day7 %}checked{% endif
+                                                            %}>
+                    <span class="checkmark"></span>
+                </label></td>
                 <td>
                     <div class="progress">
-                      <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                    </div></td>
+                        {% if habit.day1 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day2 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day3 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day4 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day5 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day6 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% if habit.day7 %}
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                        {% set count.a = count.a / 7 * 100 // 1 %}
+                        <div class="progress-bar" role="progressbar" style="width: {{ count.a }}%;"
+                             aria-valuenow="{{ count.a }}" aria-valuemin="0" aria-valuemax="100">{{ count.a }}%
+                        </div>
+                    </div>
+                </td>
             </tr>
+            {% endif %}
             {% endfor %}
-            <button class="btn primary-btn"><input type="submit" value="Сохранить изменения"></button>
+            <tr>
+                <td colspan="9">
+                    <button type="submit" class="btn btn-success">Сохранить изменения</button>
+                </td>
+            </tr>
         </form>
         </tbody>
     </table>
     <div class="d-flex justify-content-between">
-        <a href="/add_habit"><button class="btn btn-primary">Добавить привычку</button></a>
-        <a href="/create_new_week"><button class="btn btn-primary">Начать новую неделю</button></a>
+        <a href="/add_habit">
+            <button class="btn btn-primary">Добавить привычку</button>
+        </a>
+        <a href="/create_new_week">
+            <button class="btn btn-secondary">Начать новую неделю</button>
+        </a>
     </div>
+
 </div>
+<script src="static/js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

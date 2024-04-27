@@ -1,0 +1,178 @@
+<!--@keyframes pulse Пульсация у кнопки {-->
+<!--    0% {-->
+<!--        transform: scale(1);-->
+<!--        opacity: 1;-->
+<!--    }-->
+<!--    50% {-->
+<!--        transform: scale(1.1);-->
+<!--        opacity: 0.7;-->
+<!--    }-->
+<!--    100% {-->
+<!--        transform: scale(1);-->
+<!--        opacity: 1;-->
+<!--    }-->
+<!--}-->
+
+<!--.btn {-->
+<!--    background-color: #007bff;-->
+<!--    color: white;-->
+<!--    border: none;-->
+<!--    padding: 10px 20px;-->
+<!--    cursor: pointer;-->
+<!--    animation: pulse 2s infinite;-->
+<!--    border-radius: 5px;-->
+<!--}--------------------------------------------->
+
+<!--.btn  Эффект впадания у кнопки{-->
+<!--    background-color: #007bff;-->
+<!--    color: white;-->
+<!--    border: 3px solid transparent;-->
+<!--    padding: 10px 20px;-->
+<!--    cursor: pointer;-->
+<!--    transition: border-color 0.9s ease;-->
+<!--    border-radius: 5px;-->
+<!--}-->
+
+<!--.btn:hover {-->
+<!--    border-color: #ffffff;-->
+<!---------------------------------------------}-->
+
+
+<!--<!doctype html>                             Эффект заливки у чекбокса -->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+<!--    <title>Document</title>-->
+<!--    <style>-->
+<!--        .fill-checkbox {-->
+<!--  display: inline-block;-->
+<!--  width: 20px;-->
+<!--  height: 20px;-->
+<!--  background: #FFF;-->
+<!--  border: 2px solid #000;-->
+<!--  border-radius: 4px;-->
+<!--  overflow: hidden;-->
+<!--  position: relative;-->
+<!--  vertical-align: middle;-->
+<!--  cursor: pointer;-->
+<!--}-->
+
+<!--.fill-checkbox input {-->
+<!--  opacity: 0;-->
+<!--  position: absolute;-->
+<!--}-->
+
+<!--.fill-checkbox span {-->
+<!--  display: block;-->
+<!--  position: absolute;-->
+<!--  width: 100%;-->
+<!--  height: 100%;-->
+<!--  background: #2196F3;-->
+<!--  transform: scaleY(0);-->
+<!--  transform-origin: bottom;-->
+<!--  transition: transform 0.3s ease;-->
+<!--}-->
+
+<!--.fill-checkbox input:checked + span {-->
+<!--  transform: scaleY(1);-->
+<!--}-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <label class="fill-checkbox">-->
+<!--  <input type="checkbox" checked>-->
+<!--  <span></span>-->
+<!--</label>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Всплывающее окно</title>
+<style>
+    .modal {
+  position: fixed;
+  z-index: 1; /* Над другими элементами */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ширина всей страницы */
+  height: 100%; /* Высота всей страницы */
+  overflow: auto; /* Включить прокрутку, если нужно */
+  background-color: rgba(0,0,0,0.4); /* Черный фон с прозрачностью */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% от верха и по центру */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Ширина контента */
+  border-radius: 8px; /* Скругленные углы */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  background-color: #4CAF50; /* Зеленый */
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+h2 {
+  color: #333;
+}
+
+form {
+  margin-top: 20px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Модальное окно -->
+<div id="completionModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Отлично! Вы на шаг ближе к цели!</h2>
+    <p>Вы завершили привычку "название"!</p>
+    <form>
+      <label>
+        <input type="checkbox" id="addNextWeek"> Добавить привычку к следующей неделе
+      </label>
+      <button type="button" onclick="submitForm()">Подтвердить</button>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+<script>
+
+</script>
+</html>
